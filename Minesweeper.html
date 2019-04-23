@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			.field {
+				overflow: hidden;
+			}
+			table {
+				border-collapse: collapse;
+			}
+			td {
+				width: 50px;
+				height: 50px;
+				border: 1px #fff solid;
+				background-color: #ddd;
+			}
+			button {
+				width: 50px;
+				height: 50px;
+				cursor: pointer;
+			}
+			img{
+				width:50px;
+				height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="field">
+			<table>
+				<tr>
+					<td><button id="bt1"></button></td>
+					<td><button id="bt2"></button></td>
+					<td><button id="bt3"></button></td>
+					<td><button id="bt4"></button></td>
+					<td><button id="bt5"></button></td>
+					<td><button id="bt6"></button></td>
+					<td><button id="bt7"></button></td>
+					<td><button id="bt8"></button></td>
+					<td><button id="bt9"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt10"></button></td>
+					<td><button id="bt11"></button></td>
+					<td><button id="bt12"></button></td>
+					<td><button id="bt13"></button></td>
+					<td><button id="bt14"></button></td>
+					<td><button id="bt15"></button></td>
+					<td><button id="bt16"></button></td>
+					<td><button id="bt17"></button></td>
+					<td><button id="bt18"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt19"></button></td>
+					<td><button id="bt20"></button></td>
+					<td><button id="bt21"></button></td>
+					<td><button id="bt22"></button></td>
+					<td><button id="bt23"></button></td>
+					<td><button id="bt24"></button></td>
+					<td><button id="bt25"></button></td>
+					<td><button id="bt26"></button></td>
+					<td><button id="bt27"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt28"></button></td>
+					<td><button id="bt29"></button></td>
+					<td><button id="bt30"></button></td>
+					<td><button id="bt31"></button></td>
+					<td><button id="bt32"></button></td>
+					<td><button id="bt33"></button></td>
+					<td><button id="bt34"></button></td>
+					<td><button id="bt35"></button></td>
+					<td><button id="bt36"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt37"></button></td>
+					<td><button id="bt38"></button></td>
+					<td><button id="bt39"></button></td>
+					<td><button id="bt40"></button></td>
+					<td><button id="bt41"></button></td>
+					<td><button id="bt42"></button></td>
+					<td><button id="bt43"></button></td>
+					<td><button id="bt44"></button></td>
+					<td><button id="bt45"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt46"></button></td>
+					<td><button id="bt47"></button></td>
+					<td><button id="bt48"></button></td>
+					<td><button id="bt49"></button></td>
+					<td><button id="bt50"></button></td>
+					<td><button id="bt51"></button></td>
+					<td><button id="bt52"></button></td>
+					<td><button id="bt53"></button></td>
+					<td><button id="bt54"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt55"></button></td>
+					<td><button id="bt56"></button></td>
+					<td><button id="bt57"></button></td>
+					<td><button id="bt58"></button></td>
+					<td><button id="bt59"></button></td>
+					<td><button id="bt60"></button></td>
+					<td><button id="bt61"></button></td>
+					<td><button id="bt62"></button></td>
+					<td><button id="bt63"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt64"></button></td>
+					<td><button id="bt65"></button></td>
+					<td><button id="bt66"></button></td>
+					<td><button id="bt67"></button></td>
+					<td><button id="bt68"></button></td>
+					<td><button id="bt69"></button></td>
+					<td><button id="bt70"></button></td>
+					<td><button id="bt71"></button></td>
+					<td><button id="bt72"></button></td>
+				</tr>
+				<tr>
+					<td><button id="bt73"></button></td>
+					<td><button id="bt74"></button></td>
+					<td><button id="bt75"></button></td>
+					<td><button id="bt76"></button></td>
+					<td><button id="bt77"></button></td>
+					<td><button id="bt78"></button></td>
+					<td><button id="bt79"></button></td>
+					<td><button id="bt80"></button></td>
+					<td><button id="bt81"></button></td>
+				</tr>
+			</table>
+		</div>
+		<script>
+			var buttons = document.getElementsByTagName("BUTTON").length;
+			for(i=1; i<=buttons; i++) {
+				btnId = "bt" + i;
+				document.getElementById(btnId).addEventListener("click", mouseClickEvent);
+			}
+			var openedBlocks   = [];
+			var minesPositions = createMines();
+
+			function createMines() {
+				minesArray = [];
+				while(minesArray.length < 10){
+					position = Math.floor((Math.random() * 64) + 1);
+					if(minesArray.indexOf(position) < 0)
+						minesArray.push(position);
+				}
+				return minesArray;
+			}
+			
+			function mouseClickEvent() {
+
+				numId = this.id.substring(2);
+				if(minesPositions.indexOf(Number(numId)) > -1){gameOver();}
+				openBox(Number(numId),[]);
+			}
+
+			function openBox(numId, boxesToOpen) { 
+				
+				if(openedBlocks.indexOf(numId) === -1){
+					boxesToOpen.push(numId);
+				}
+				
+				result = checkForCloseMines(numId); 
+				if(Array.isArray(result)){
+					
+					for(i=0; i<result.length; i++){
+						if(openedBlocks.indexOf(result[i]) === -1){openBox(result[i], boxesToOpen);}
+					}
+				}
+
+				boxesToOpen.pop();
+				arrayLen = boxesToOpen.length;
+				if(boxesToOpen.length > 0){openBox(boxesToOpen[arrayLen - 1], boxesToOpen);}
+			}
+
+			function checkForCloseMines(boxId) {
+				x = boxId%9;
+				y = Math.floor(boxId/9) - ((x == 0) ? 1 : 0);
+				x = (x == 0) ? 9 - 1 : x - 1;
+
+				minesClose = 0;
+				neighbors  = [];
+				for(i=-1; i<=1; i++){
+					for(j=-1; j<=1; j++){
+						if(y + i > -1 && y + i < 9 && x + j > -1 && x + j < 9 && (i != 0 || j != 0)){
+							newBoxId = (y + i) * 9 + (x + j) + 1;
+							if(openedBlocks.indexOf(newBoxId) === -1){neighbors.push(newBoxId);}
+							if(minesPositions.indexOf(newBoxId) > -1){minesClose++;}
+						}	
+					}
+				}
+				if(minesClose > 0){
+					boxFullId = "bt" + (y * 9 + x + 1);
+					if(openedBlocks.indexOf(boxId) === -1){
+						document.getElementById(boxFullId).parentNode.innerHTML = minesClose;
+						openedBlocks.push(boxId);
+					}
+					return minesClose;
+				}
+				else{
+					boxFullId = "bt" + (y * 9 + x + 1);
+					if(openedBlocks.indexOf(boxId) === -1){
+						document.getElementById(boxFullId).parentNode.innerHTML = '';
+						openedBlocks.push(boxId);
+					}
+					return neighbors;
+				}
+			}
+
+			function gameOver() {
+				
+				for(i=1; i<=81; i++){
+					if(openedBlocks.indexOf(i) > -1) continue;
+					else openedBlocks.push(i);
+
+					if(minesPositions.indexOf(i) > -1){
+						document.getElementById("bt" + i).parentNode.innerHTML = '<img src="mine.png">';
+						continue;
+					} 
+
+					x = i%9;
+					y = Math.floor(i/9) - ((x == 0) ? 1 : 0);
+					x = (x == 0) ? 9 - 1 : x - 1;
+					minesClose = 0;
+
+					for(j=-1; j<=1; j++){
+						for(k=-1; k<=1; k++){
+							if(y + j > -1 && y + j < 9 && x + k > -1 && x + k < 9 && (j != 0 || k != 0)){
+								boxId = (y + j) * 9 + (x + k) + 1;
+								if(minesPositions.indexOf(boxId) > -1){minesClose++;}
+							}
+						}
+					}
+
+					if(minesClose > 0){document.getElementById("bt" + i).parentNode.innerHTML = minesClose;}
+					else{document.getElementById("bt" + i).parentNode.innerHTML = '';}	
+				}
+				alert("Game Over!!!");
+			}	
+		</script>
+	</body>
+</html>
